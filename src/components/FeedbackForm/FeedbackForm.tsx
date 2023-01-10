@@ -7,10 +7,13 @@ interface MyForm {
   name: string;
   email: string;
   rating: number;
+  comments?: string;
 }
 
 const schema = Yup.object().shape({
-  name: Yup.string().required("Name is required").min(2, "Minimum characters is 2"),
+  name: Yup.string()
+    .required("Name is required")
+    .min(2, "Minimum characters is 2"),
   email: Yup.string()
     .required("Email is required")
     .email("Please enter a valid email"),
@@ -39,7 +42,7 @@ export const FeedbackForm = () => {
     formState: { errors },
     reset,
   } = useForm<MyForm>({
-    defaultValues: { name: "", email: "", rating: 0 },
+    defaultValues: { name: "", email: "", rating: 0, comments: "" },
     resolver: yupResolver(schema),
   });
 
@@ -51,22 +54,31 @@ export const FeedbackForm = () => {
   return (
     <form onSubmit={handleSubmit(submitForm)}>
       <h2>Feedback Form</h2>
+      <label>Name:</label>
       <input
         {...register("name")}
         data-testid="name"
-        placeholder="name"
+        placeholder="Name"
         type="text"
       />
       <p data-testid="error-name">{errors.name?.message}</p>
+      <label>Email:</label>
       <input
         {...register("email")}
         data-testid="email"
-        placeholder="email"
+        placeholder="Email"
         type="email"
       />
       <p data-testid="error-email">{errors.email?.message}</p>
+      <label>Comments:</label>
+      <textarea
+        {...register("comments")}
+        data-testid="comments"
+        placeholder="Comments"
+      />
       {/* <input {...register("rating")} placeholder="rating" type="number" />
       <p>{errors.rating?.message}</p> */}
+      <label>Rating:</label>
       <div className="star-rating">
         <input
           {...register("rating")}
@@ -74,6 +86,7 @@ export const FeedbackForm = () => {
           id="5-stars"
           name="rating"
           value="5"
+          data-testid="rating"
         />
         <label htmlFor="5-stars" className="star">
           &#9733;
@@ -84,6 +97,7 @@ export const FeedbackForm = () => {
           id="4-stars"
           name="rating"
           value="4"
+          data-testid="rating"
         />
         <label htmlFor="4-stars" className="star">
           &#9733;
@@ -94,6 +108,7 @@ export const FeedbackForm = () => {
           id="3-stars"
           name="rating"
           value="3"
+          data-testid="rating"
         />
         <label htmlFor="3-stars" className="star">
           &#9733;
@@ -104,6 +119,7 @@ export const FeedbackForm = () => {
           id="2-stars"
           name="rating"
           value="2"
+          data-testid="rating"
         />
         <label htmlFor="2-stars" className="star">
           &#9733;
@@ -114,6 +130,7 @@ export const FeedbackForm = () => {
           id="1-star"
           name="rating"
           value="1"
+          data-testid="rating"
         />
         <label htmlFor="1-star" className="star">
           &#9733;

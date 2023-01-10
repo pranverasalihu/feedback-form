@@ -19,6 +19,12 @@ describe("<FeedbackForm /> component", () => {
         target: { value: "john@example.com" },
       });
     });
+    //  const ratingInput = getByTestId("rating");
+    //  await act(async () => {
+    //    await fireEvent.change(ratingInput, {
+    //      target: { value: "2" },
+    //    });
+    //  });
     // const ratingInput = getByLabelText("5-stars");
     // fireEvent.click(ratingInput);
 
@@ -35,29 +41,7 @@ describe("<FeedbackForm /> component", () => {
     expect(emailInput.value).toBe("john@example.com");
     // expect(ratingInput).toBe(false);
   });
-  // it("adds a non valid email", async () => {
-  //   // Render the form
-  //   const { getByText, getByTestId } = render(<FeedbackForm />);
-
-  //   const emailInput = getByTestId("email");
-  //   await act(async () => {
-  //     await fireEvent.change(emailInput, { target: { value: "john@deep" } });
-  //   });
-
-  //   await act(async () => {
-  //     // Submit the form
-  //     const button = getByText("Submit");
-  //     await act(async () => {
-  //       await fireEvent.click(button);
-  //     });
-  //   });
-
-  //   await act(async () => {
-  //     const message = getByTestId("error-email");
-  //     expect(message).toHaveTextContent("Please enter a valid email");
-  //   });
-  // });
-  it("adds non valid values", async () => {
+  it("adds non valid value", async () => {
     // Render the form
     const { getByText, getByTestId } = render(<FeedbackForm />);
 

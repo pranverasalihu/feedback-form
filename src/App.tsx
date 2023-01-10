@@ -5,7 +5,6 @@ export const App = () => {
   return (
     <>
       <FeedbackForm />
-      <p>learn react</p>
     </>
   );
 };
