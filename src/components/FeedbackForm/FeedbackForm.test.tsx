@@ -8,58 +8,64 @@ describe("<FeedbackForm /> component", () => {
     const { getByText, getByTestId } = render(<FeedbackForm />);
 
     // Fill out the form
-    const nameInput = getByTestId("name");
+    const nameInput = getByTestId("name") as HTMLInputElement;
     await act(async () => {
-      await fireEvent.change(nameInput, { target: { value: "John" } });
+      fireEvent.change(nameInput, { target: { value: "John" } });
     });
 
-    const emailInput = getByTestId("email");
+    const emailInput = getByTestId("email") as HTMLInputElement;
     await act(async () => {
-      await fireEvent.change(emailInput, {
+      fireEvent.change(emailInput, {
         target: { value: "john@example.com" },
       });
     });
-    //  const ratingInput = getByTestId("rating");
-    //  await act(async () => {
-    //    await fireEvent.change(ratingInput, {
-    //      target: { value: "2" },
-    //    });
-    //  });
-    // const ratingInput = getByLabelText("5-stars");
-    // fireEvent.click(ratingInput);
+
+    const ratingInput = getByTestId("rating-5") as HTMLInputElement;
+    await act(async () => {
+      fireEvent.click(ratingInput);
+    });
+
+    // The form should be ready to submit
+    expect(nameInput.value).toBe("John");
+    expect(emailInput.value).toBe("john@example.com");
+    expect(ratingInput.checked).toBe(true);
 
     // Submit the form
     const button = getByText("Submit");
     await act(async () => {
-      await fireEvent.click(button);
+      fireEvent.click(button);
     });
 
     // The form should be submitted and reset
-    //@ts-ignore
-    expect(nameInput.value).toBe("John");
-    //@ts-ignore
-    expect(emailInput.value).toBe("john@example.com");
-    // expect(ratingInput).toBe(false);
+    expect(nameInput.value).toBe("");
+    expect(emailInput.value).toBe("");
+    expect(ratingInput.checked).toBe(false);
   });
   it("adds non valid value", async () => {
     // Render the form
     const { getByText, getByTestId } = render(<FeedbackForm />);
 
-    const nameInput = getByTestId("name");
+    const nameInput = getByTestId("name") as HTMLInputElement;
     await act(async () => {
-      await fireEvent.change(nameInput, { target: { value: "j" } });
+      fireEvent.change(nameInput, { target: { value: "j" } });
     });
 
-    const emailInput = getByTestId("email");
+    const emailInput = getByTestId("email") as HTMLInputElement;
     await act(async () => {
-      await fireEvent.change(emailInput, { target: { value: "john@deep" } });
+      fireEvent.change(emailInput, { target: { value: "john@deep" } });
     });
 
+    const ratingInput = getByTestId("rating-5") as HTMLInputElement;
     await act(async () => {
-      // Submit the form
+      fireEvent.change(ratingInput, { target: { value: "6" } });
+      fireEvent.click(ratingInput);
+    });
+
+    // Submit the form
+    await act(async () => {
       const button = getByText("Submit");
       await act(async () => {
-        await fireEvent.click(button);
+        fireEvent.click(button);
       });
     });
 
@@ -72,26 +78,31 @@ describe("<FeedbackForm /> component", () => {
       const message = getByTestId("error-name");
       expect(message).toHaveTextContent("Minimum characters is 2");
     });
+
+    await act(async () => {
+      const message = getByTestId("error-rating");
+      expect(message).toHaveTextContent("You must add a number between 1-5");
+    });
   });
-  it("submits the form with required values", async () => {
+  it("submits the form without required values", async () => {
     // Render the form
     const { getByText, getByTestId } = render(<FeedbackForm />);
 
-    const nameInput = getByTestId("name");
+    const nameInput = getByTestId("name") as HTMLInputElement;
     await act(async () => {
-      await fireEvent.change(nameInput, { target: { value: "" } });
+      fireEvent.change(nameInput, { target: { value: "" } });
     });
 
-    const emailInput = getByTestId("email");
+    const emailInput = getByTestId("email") as HTMLInputElement;
     await act(async () => {
-      await fireEvent.change(emailInput, { target: { value: "" } });
+      fireEvent.change(emailInput, { target: { value: "" } });
     });
 
+    // Submit the form
     await act(async () => {
-      // Submit the form
       const button = getByText("Submit");
       await act(async () => {
-        await fireEvent.click(button);
+        fireEvent.click(button);
       });
     });
 
